@@ -19,7 +19,8 @@ function displayCharacters(characters) {
     characters.forEach(character => {
         const characterCard = document.createElement('div');
         characterCard.classList.add('character-card');
-        
+        characterCard.classList.add(character.category); // Добавляем класс карточке для фильтрации
+
         // Заполнение карточки данными о персонаже
         characterCard.innerHTML = 
             <img src="${character.photo}" alt="${character.name}">
@@ -28,10 +29,32 @@ function displayCharacters(characters) {
             <p><strong>Фильмы:</strong> ${character.movies.join(', ')}</p>
             <p><strong>Статус:</strong> ${character.status}</p>
         ;
-        
+
         charactersContainer.appendChild(characterCard);
     });
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    const filterButtons = document.querySelectorAll(".filter-button");
+    const cards = document.querySelectorAll(".character-card");
+
+    filterButtons.forEach(button => {
+        button.addEventListener("click", function() {
+            const filter = this.getAttribute("data-filter");
+
+            cards.forEach(card => {
+                if (filter === "all" || card.classList.contains(filter)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        });
+    });
+});
+
+
+
 
 // Вызов функции загрузки данных при загрузке страницы
 window.onload = loadCharacters;
